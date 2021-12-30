@@ -1,19 +1,6 @@
-import { isDate, isObject } from "./utils"
+import { isDate, isPlainObject } from "./utils"
 
-// 编码规则
-function encode(val: string): String {
-  // encodeURIComponent可把字符串作为 URI 组件进行编码
-  // 同时把特殊字符再转化回来
-  return encodeURIComponent(val)
-    .replace(/%40/g, '@')
-    .replace(/%3A/ig, ':')
-    .replace(/%24/g, '$')
-    .replace(/%2C/ig, ',')
-    .replace(/%20/g, '+')
-    .replace(/%5B/ig, '[')
-    .replace(/%5D/ig, ']')
-}
-
+// 处理请求url参数逻辑
 // url拼接函数
 export function buildURL(url: string, params?: any): string {
 
@@ -45,7 +32,7 @@ export function buildURL(url: string, params?: any): string {
     values.forEach(val => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)
@@ -66,4 +53,18 @@ export function buildURL(url: string, params?: any): string {
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams
   }
   return url
+}
+
+// 编码规则
+function encode(val: string): String {
+  // encodeURIComponent可把字符串作为 URI 组件进行编码
+  // 同时把特殊字符再转化回来
+  return encodeURIComponent(val)
+    .replace(/%40/g, '@')
+    .replace(/%3A/ig, ':')
+    .replace(/%24/g, '$')
+    .replace(/%2C/ig, ',')
+    .replace(/%20/g, '+')
+    .replace(/%5B/ig, '[')
+    .replace(/%5D/ig, ']')
 }
