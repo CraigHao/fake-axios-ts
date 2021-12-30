@@ -68,8 +68,29 @@ import axios from '../../src/index'
 /**
  * 请求body测试用例
  */
+// axios({
+//   method: 'POST',
+//   url: '/base/post',
+//   data: {
+//     a: 1,
+//     b: 2
+//   }
+// })
+
+// const arr = new Int32Array([21, 31])
+
+// axios({
+//   method: 'POST',
+//   url: '/base/buffer',
+//   data: arr
+// })
+// -------------------------------
+
+/**
+ * headers测试用例
+ */
 axios({
-  method: 'POST',
+  method: 'post',
   url: '/base/post',
   data: {
     a: 1,
@@ -77,11 +98,24 @@ axios({
   }
 })
 
-const arr = new Int32Array([21, 31])
+axios({
+  method: 'post',
+  url: '/base/post',
+  headers: {
+    'Accept': 'application/json, text/plain, */*',
+    'content-type': 'application/json'
+  },
+  data: {
+    a: 1,
+    b: 2
+  }
+})
+
+const paramsString = 'q=URLUtils.searchParams&topic=api'
+const searchParams = new URLSearchParams(paramsString)
 
 axios({
-  method: 'POST',
-  url: '/base/buffer',
-  data: arr
+  method: 'post',
+  url: '/base/post',
+  data: searchParams
 })
-// -------------------------------
