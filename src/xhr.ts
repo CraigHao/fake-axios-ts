@@ -2,8 +2,9 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "./types"
 import { parseHeaders } from "./helpers/headers"
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
-  return new Promise((resolve) => {
-    const { data = null, url, method = 'get', headers, responseType } = config
+  return new Promise((resolve, reject) => {
+    const { data = null, url, method = 'get', 
+      headers, responseType, timeout } = config
 
     // 学习XMLHttpRequest
     const request = new XMLHttpRequest()
@@ -13,6 +14,11 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.responseType = responseType
     }
 
+    // 配置超时时间
+    if (timeout) {
+      request.timeout = timeout
+    }
+  
     request.open(method.toUpperCase(), url, true)
 
     // 当请求被发送到服务器时，我们需要执行一些基于响应的任务。
@@ -27,6 +33,12 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (request.readyState !== 4) {
         return
       }
+
+      // 网络错误和超时错误status为0，直接return
+      if (request.status === 0) {
+        return
+      }
+
       // 获取response的所有headers
       const responseHeaders = parseHeaders(request.getAllResponseHeaders())
       // 决定responseData从哪个属性里面拿
@@ -43,7 +55,17 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
         request
       }
 
-      resolve(response)
+      handleResponse(response)
+    }
+
+    // 处理网络错误事件
+    request.onerror = function handleError() {
+      reject(new Error('Network Error.'))
+    }
+
+    // 处理超时事件
+    request.ontimeout = function handleTimeout() {
+      reject(new Error(`Timeout of ${timeout} ms exceeded.`))
     }
 
     // 设置headers
@@ -57,6 +79,15 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     })
 
     request.send(data)
+
+    // 对正常情况和异常情况做处理
+    function handleResponse(response: AxiosResponse): void {
+      if (response.status >= 200 && response.status < 300) {
+        resolve(response)
+      } else {
+        reject(new Error(`Request failed with status code ${response.status}`))
+      }
+    }
   })
 
 }
