@@ -1,4 +1,5 @@
-//所有的公共类型定义文件
+// 所有的公共类型定义文件
+// 到处给外面的应用进行使用
 
 export type Method = 'get' | 'GET'
   | 'delete' | 'DELETE'
@@ -30,4 +31,13 @@ export interface AxiosResponse {
 // axios返回的promise对象，继承Promise泛型接口
 export interface AxiosPromise extends Promise<AxiosResponse> {
   
+}
+
+// Error对外接口
+export interface AxiosError extends Error {
+  isAxiosError: boolean
+  config: AxiosRequestConfig
+  code?: string | null
+  request?: any
+  response?: AxiosResponse
 }
