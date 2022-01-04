@@ -14,4 +14,19 @@ export interface AxiosRequestConfig {
   data?: any
   params?: any
   headers?: any
+  responseType?: XMLHttpRequestResponseType
+}
+
+export interface AxiosResponse {
+  data: any
+  status: number
+  statusText: string
+  headers: any
+  config: AxiosRequestConfig
+  request: any
+}
+
+// axios返回的promise对象，继承Promise泛型接口
+export interface AxiosPromise extends Promise<AxiosResponse> {
+  
 }
