@@ -1,13 +1,15 @@
-import { AxiosRequestConfig, AxiosPromise } from './types'
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from './types'
 import { buildURL } from './helpers/url'
-import { transformRequest } from './helpers/data'
+import { transformRequest, transformResponse } from './helpers/data'
 import { processHeaders } from './helpers/headers'
 
 import xhr from './xhr'
 
 function axios(config: AxiosRequestConfig): AxiosPromise {
   processConfig(config)
-  return xhr(config)
+  return xhr(config).then(res => {
+    return transformResponseData(res)
+  })
 }
 
 // 在发送xhr请求之前对config做处理
@@ -34,6 +36,12 @@ function transformHeaders(config: AxiosRequestConfig): any {
   // headers是可选属性，如果没有配置，则默认给headers赋一个空值
   const { headers = {}, data } = config
   return processHeaders(headers, data)
+}
+
+// 对返回的res.data进行转换成JSON对象处理
+function transformResponseData(res: AxiosResponse): AxiosResponse {
+  res.data = transformResponse(res.data)
+  return res
 }
 
 export default axios
