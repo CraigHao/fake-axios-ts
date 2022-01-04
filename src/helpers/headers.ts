@@ -22,9 +22,34 @@ function normalizedHeaderName(headers: any, normalizedName: string): void {
   }
   // 对传入的headers的key进行遍历
   Object.keys(headers).forEach(name => {
-    if(name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
       headers[normalizedName] = headers[name]
       delete headers[name]
     }
   })
+}
+
+// 把得到的headers字符串转化成对象
+export function parseHeaders(headers: string): any {
+  
+  let parsed = Object.create(null)
+  if (!headers) {
+    return parsed
+  }
+
+  headers.split('\r\n').forEach(line => {
+    // 根据冒号前后进行解构赋值
+    let [key, val] = line.split(':')
+    key = key.trim().toLowerCase()
+    if (!key) {
+      return
+    }
+    if (val) {
+      val = val.trim()
+    }
+
+    parsed[key] = val
+  })
+
+  return parsed
 }
