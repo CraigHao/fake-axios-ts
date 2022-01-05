@@ -58,4 +58,6 @@ export interface Axios {
 export interface AxiosInstance extends Axios {
   // 接口本身是个函数
   (config: AxiosRequestConfig): AxiosPromise
+
+  (url: string, config?: AxiosRequestConfig): AxiosPromise
 }
