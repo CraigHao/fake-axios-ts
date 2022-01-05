@@ -1,6 +1,6 @@
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "./types"
-import { parseHeaders } from "./helpers/headers"
-import { createError } from "./helpers/error"
+import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "../types"
+import { parseHeaders } from "../helpers/headers"
+import { createError } from "../helpers/error"
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -20,7 +20,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       request.timeout = timeout
     }
 
-    request.open(method.toUpperCase(), url, true)
+    request.open(method.toUpperCase(), url!, true)
 
     // 当请求被发送到服务器时，我们需要执行一些基于响应的任务。
     // 每当 readyState 改变时，就会触发 onreadystatechange 事件。
