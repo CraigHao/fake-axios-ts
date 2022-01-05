@@ -42,6 +42,9 @@ export interface AxiosError extends Error {
   response?: AxiosResponse
 }
 
+// 为所有支持请求方法扩展一些接口
+// 使用这些方法就不必在config中指定url、method、data这些属性了
+// 把Axios改造成混合对象，本身是个方法，又有很多方法属性
 export interface Axios {
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -56,8 +59,8 @@ export interface Axios {
 
 // 混合类型接口，既有下面定义的函数又有从上面继承的方法
 export interface AxiosInstance extends Axios {
-  // 接口本身是个函数
+  
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
-
+  // 重载，可能传一个参数也可能传两个参数
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
 }

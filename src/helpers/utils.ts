@@ -13,7 +13,8 @@ export function isPlainObject(val: any): val is Object {
   // 普通对象的判断
   return toString.call(val) === '[object Object]'
 }
-
+// extend的最终目的是把from里的属性都扩展到to中，包括原型上的属性
+// 需使用交叉类型T&U，并且用到了类型断言
 export function extend<T, U>(to: T, from: U): T & U {
   for (const key in from) {
     ; (to as T & U)[key] = from[key] as any
