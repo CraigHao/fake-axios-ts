@@ -59,8 +59,23 @@ export interface Axios {
 
 // 混合类型接口，既有下面定义的函数又有从上面继承的方法
 export interface AxiosInstance extends Axios {
-  
+
   <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   // 重载，可能传一个参数也可能传两个参数
   <T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
+}
+
+// 泛型接口，因为对于resolve函数的参数，请求拦截器和响应拦截器是不同的。
+export interface AxiosInterceptorManager<T> {
+  use(resolved: ResolvedFn<T>, rejected: RejectedFn): number
+
+  eject(id: number): void
+}
+
+export interface ResolvedFn<T> {
+  (val: T): T | Promise<T>
+}
+
+export interface RejectedFn {
+  (error: any): any
 }
