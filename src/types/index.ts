@@ -46,6 +46,11 @@ export interface AxiosError extends Error {
 // 使用这些方法就不必在config中指定url、method、data这些属性了
 // 把Axios改造成混合对象，本身是个方法，又有很多方法属性
 export interface Axios {
+  interceptors: {
+    request: AxiosInterceptorManager<AxiosRequestConfig>
+    response: AxiosInterceptorManager<AxiosResponse> 
+  }
+
   request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>
   get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
   delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>
@@ -67,7 +72,7 @@ export interface AxiosInstance extends Axios {
 
 // 泛型接口，因为对于resolve函数的参数，请求拦截器和响应拦截器是不同的。
 export interface AxiosInterceptorManager<T> {
-  use(resolved: ResolvedFn<T>, rejected: RejectedFn): number
+  use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
 
   eject(id: number): void
 }
