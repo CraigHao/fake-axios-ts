@@ -46,6 +46,7 @@ export interface AxiosError extends Error {
 // 使用这些方法就不必在config中指定url、method、data这些属性了
 // 把Axios改造成混合对象，本身是个方法，又有很多方法属性
 export interface Axios {
+  defaults: AxiosRequestConfig
   interceptors: {
     request: AxiosInterceptorManager<AxiosRequestConfig>
     response: AxiosInterceptorManager<AxiosResponse> 

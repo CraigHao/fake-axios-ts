@@ -16,9 +16,11 @@ interface PromiseChain<T> {
 // Axios类，实现Axios接口定义的公共方法
 // 对于get post等方法都是对外提供的语法糖，内部都是通过调用request方法实现发送请求
 export default class Axios {
+  defaults: AxiosRequestConfig
   interceptors: Interceptors
 
-  constructor() {
+  constructor(initConfig: AxiosRequestConfig) {
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponse>()
