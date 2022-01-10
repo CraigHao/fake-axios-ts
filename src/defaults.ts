@@ -21,7 +21,7 @@ const methodWithData = ['post', 'push', 'patch']
 
 methodWithData.forEach(method => {
   defaults.headers[method] = {
-    'Content-type': 'application/json'
+    'Content-Type': 'application/x-www-form-urlencoded'
   }
 })
 

@@ -31,7 +31,7 @@ export default function mergeConfig(config1: AxiosRequestConfig,
 
 const strats = Object.create(null)
 
-const stratKeysFromConfig2 = ['url', 'param', 'data']
+const stratKeysFromConfig2 = ['url', 'params', 'data']
 stratKeysFromConfig2.forEach(key => {
   strats[key] = fromConfig2Strat
 })
@@ -48,7 +48,7 @@ function defaultStrat(config1: any, config2: any): any {
 
 // 只取config2策略
 function fromConfig2Strat(config1: any, config2: any): any {
-  if (config2 !== 'undefined') {
+  if (typeof config2 !== 'undefined') {
     return config2
   }
 }
@@ -56,7 +56,7 @@ function fromConfig2Strat(config1: any, config2: any): any {
 function deepMergeStrat(config1: any, config2: any): any {
   if (isPlainObject(config2)) {
     return deepClone(config1, config2)
-  } else if (config2 !== 'undefined') {
+  } else if (typeof config2 !== 'undefined') {
     return config2
   } else if (isPlainObject(config1)) {
     return deepClone(config1)

@@ -1,6 +1,5 @@
-import { AxiosPromise, AxiosRequestConfig, AxiosResponse, ResolvedFn, RejectedFn } from "../types";
+import { Method, AxiosPromise, AxiosRequestConfig, AxiosResponse, ResolvedFn, RejectedFn } from "../types";
 import dispatchRequest from "./dispatchRequest";
-import { Method } from "../types";
 import InterceptorManager from "./interceptorManager";
 import mergeConfig from "./mergeConfig";
 

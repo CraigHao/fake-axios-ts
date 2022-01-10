@@ -32,8 +32,9 @@ export function deepClone(...objs: any[]): any {
           // 判断result[key]是否已经存在
           if (isPlainObject(result[key])) {
             result[key] = deepClone(result[key], val)
+          } else {
+            result[key] = deepClone({}, val)
           }
-          result[key] = deepClone(val)
         } else {
           result[key] = val
         }

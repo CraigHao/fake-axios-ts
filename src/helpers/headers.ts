@@ -60,7 +60,7 @@ export function flattenHeaders(headers: any, method: Method): any {
     return headers
   }
 
-  headers = deepClone(headers.common, headers[method], headers)
+  headers = deepClone(headers.common || {}, headers[method] || {}, headers)
 
   const methodsToDelete = ['delete', 'get', 'head', 'options',
     'post', 'put', 'patch', 'common']
