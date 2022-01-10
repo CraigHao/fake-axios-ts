@@ -1,3 +1,4 @@
+import { isPlainObject, deepClone } from "../helpers/utils";
 import { AxiosRequestConfig } from "../types";
 
 export default function mergeConfig(config1: AxiosRequestConfig,
@@ -35,14 +36,33 @@ stratKeysFromConfig2.forEach(key => {
   strats[key] = fromConfig2Strat
 })
 
+const stratsKeysDeepMerge = ['headers']
+stratsKeysDeepMerge.forEach(key => {
+  strats[key] = deepMergeStrat
+})
+
 // 默认合并策略：优先取config2
-function defaultStrat(config1: any, config2: any) {
+function defaultStrat(config1: any, config2: any): any {
   return typeof config2 !== 'undefined' ? config2 : config1
 }
 
 // 只取config2策略
-function fromConfig2Strat(config1: any, config2: any) {
+function fromConfig2Strat(config1: any, config2: any): any {
   if (config2 !== 'undefined') {
     return config2
   }
 }
+
+function deepMergeStrat(config1: any, config2: any): any {
+  if (isPlainObject(config2)) {
+    return deepClone(config1, config2)
+  } else if (config2 !== 'undefined') {
+    return config2
+  } else if (isPlainObject(config1)) {
+    return deepClone(config1)
+  } else if (typeof config1 !== 'undefined') {
+    return config1
+  }
+}
+
+
