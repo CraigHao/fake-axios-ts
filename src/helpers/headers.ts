@@ -1,4 +1,5 @@
-import { isPlainObject } from "./utils";
+import { Method } from "../types";
+import { isPlainObject, deepClone } from "./utils";
 
 // 处理请求中配置headers的情况
 export function processHeaders(headers: any, data: any): any {
@@ -31,7 +32,7 @@ function normalizedHeaderName(headers: any, normalizedName: string): void {
 
 // 把得到的headers字符串转化成对象
 export function parseHeaders(headers: string): any {
-  
+
   let parsed = Object.create(null)
   if (!headers) {
     return parsed
@@ -52,4 +53,19 @@ export function parseHeaders(headers: string): any {
   })
 
   return parsed
+}
+
+export function flattenHeaders(headers: any, method: Method): any {
+  if (!headers) {
+    return headers
+  }
+
+  headers = deepClone(headers.common, headers[method], headers)
+
+  const methodsToDelete = ['delete', 'get', 'head', 'options',
+    'post', 'put', 'patch', 'common']
+  methodsToDelete.forEach(method => {
+    delete headers[method]
+  })
+  return headers
 }
