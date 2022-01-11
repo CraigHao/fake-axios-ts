@@ -18,6 +18,10 @@ export interface AxiosRequestConfig {
   responseType?: XMLHttpRequestResponseType
   timeout?: number
 
+  // 函数或函数数组
+  transformRequest?: AxiosTransformer | AxiosTransformer[]
+  transformResponse?: AxiosTransformer | AxiosTransformer[]
+
   [propName: string]: any
 }
 
@@ -91,4 +95,8 @@ export interface RejectedFn {
 // 用来创建新的axios实例，允许传入新的配置与默认配置合并
 export interface AxiosStatic extends AxiosInstance {
   create(config?: AxiosRequestConfig): AxiosInstance
+}
+
+export interface AxiosTransformer {
+  (data: any, headers?: any): any
 }
