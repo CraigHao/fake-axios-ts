@@ -87,3 +87,8 @@ export interface ResolvedFn<T> {
 export interface RejectedFn {
   (error: any): any
 }
+
+// 用来创建新的axios实例，允许传入新的配置与默认配置合并
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: AxiosRequestConfig): AxiosInstance
+}
