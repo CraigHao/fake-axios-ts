@@ -33,7 +33,7 @@ export function deepClone(...objs: any[]): any {
           if (isPlainObject(result[key])) {
             result[key] = deepClone(result[key], val)
           } else {
-            result[key] = deepClone({}, val)
+            result[key] = deepClone(val)
           }
         } else {
           result[key] = val

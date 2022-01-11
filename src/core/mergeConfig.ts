@@ -1,6 +1,43 @@
 import { isPlainObject, deepClone } from "../helpers/utils";
 import { AxiosRequestConfig } from "../types";
 
+const strats = Object.create(null)
+
+// 默认合并策略：优先取config2
+function defaultStrat(val1: any, val2: any): any {
+  return typeof val2 !== 'undefined' ? val2 : val1
+}
+
+// 只取config2策略
+function fromConfig2Strat(val1: any, val2: any): any {
+  if (typeof val2 !== 'undefined') {
+    return val2
+  }
+}
+
+function deepMergeStrat(val1: any, val2: any): any {
+  if (isPlainObject(val2)) {
+    return deepClone(val1, val2)
+  } else if (typeof val2 !== 'undefined') {
+    return val2
+  } else if (isPlainObject(val1)) {
+    return deepClone(val1)
+  } else if (typeof val1 !== 'undefined') {
+    return val1
+  }
+}
+
+const stratKeysFromConfig2 = ['url', 'params', 'data']
+stratKeysFromConfig2.forEach(key => {
+  strats[key] = fromConfig2Strat
+})
+
+const stratKeysDeepMerge = ['headers','auth']
+stratKeysDeepMerge.forEach(key => {
+  strats[key] = deepMergeStrat
+})
+
+
 export default function mergeConfig(config1: AxiosRequestConfig,
   config2?: AxiosRequestConfig): AxiosRequestConfig {
   if (!config2) {
@@ -29,40 +66,5 @@ export default function mergeConfig(config1: AxiosRequestConfig,
   return config
 }
 
-const strats = Object.create(null)
-
-const stratKeysFromConfig2 = ['url', 'params', 'data']
-stratKeysFromConfig2.forEach(key => {
-  strats[key] = fromConfig2Strat
-})
-
-const stratsKeysDeepMerge = ['headers']
-stratsKeysDeepMerge.forEach(key => {
-  strats[key] = deepMergeStrat
-})
-
-// 默认合并策略：优先取config2
-function defaultStrat(config1: any, config2: any): any {
-  return typeof config2 !== 'undefined' ? config2 : config1
-}
-
-// 只取config2策略
-function fromConfig2Strat(config1: any, config2: any): any {
-  if (typeof config2 !== 'undefined') {
-    return config2
-  }
-}
-
-function deepMergeStrat(config1: any, config2: any): any {
-  if (isPlainObject(config2)) {
-    return deepClone(config1, config2)
-  } else if (typeof config2 !== 'undefined') {
-    return config2
-  } else if (isPlainObject(config1)) {
-    return deepClone(config1)
-  } else if (typeof config1 !== 'undefined') {
-    return config1
-  }
-}
 
 

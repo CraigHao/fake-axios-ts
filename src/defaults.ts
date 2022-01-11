@@ -17,9 +17,9 @@ methodsNoData.forEach(method => {
   defaults.headers[method] = {}
 })
 
-const methodWithData = ['post', 'push', 'patch']
+const methodsWithData = ['post', 'push', 'patch']
 
-methodWithData.forEach(method => {
+methodsWithData.forEach(method => {
   defaults.headers[method] = {
     'Content-Type': 'application/x-www-form-urlencoded'
   }
