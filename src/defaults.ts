@@ -17,7 +17,7 @@ methodsNoData.forEach(method => {
   defaults.headers[method] = {}
 })
 
-const methodsWithData = ['post', 'push', 'patch']
+const methodsWithData = ['post', 'put', 'patch']
 
 methodsWithData.forEach(method => {
   defaults.headers[method] = {
