@@ -4,7 +4,7 @@ import { isDate, isPlainObject } from "./utils"
 // url拼接函数
 export function buildURL(url: string, params?: any): string {
 
-  // 如果不传url
+  // 如果不传params
   if (!params) {
     return url
   }
