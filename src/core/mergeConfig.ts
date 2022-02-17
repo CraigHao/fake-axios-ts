@@ -1,8 +1,6 @@
 import { isPlainObject, deepClone } from "../helpers/utils";
 import { AxiosRequestConfig } from "../types";
 
-const strats = Object.create(null)
-
 // 默认合并策略：优先取config2
 function defaultStrat(val1: any, val2: any): any {
   return typeof val2 !== 'undefined' ? val2 : val1
@@ -27,6 +25,8 @@ function deepMergeStrat(val1: any, val2: any): any {
   }
 }
 
+// strats[key]为此key对应的合并策略函数
+const strats = Object.create(null)
 const stratKeysFromConfig2 = ['url', 'params', 'data']
 stratKeysFromConfig2.forEach(key => {
   strats[key] = fromConfig2Strat
@@ -59,6 +59,7 @@ export default function mergeConfig(config1: AxiosRequestConfig,
 
   // config合并策略
   function mergeField(key: string): void {
+    // 根据key拿到合并策略函数strat
     const strat = strats[key] || defaultStrat
     config[key] = strat(config1[key], config2![key])
   }
